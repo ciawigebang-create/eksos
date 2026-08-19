@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Alur Materi Kelas X Semester 1 - Kurikulum Merdeka</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        econ: {
+                            light: '#eff6ff',
+                            DEFAULT: '#3b82f6',
+                            dark: '#1d4ed8',
+                            badge: '#dbeafe',
+                            text: '#1e40af'
+                        },
+                        socio: {
+                            light: '#fdf4ff',
+                            DEFAULT: '#d946ef',
+                            dark: '#a21caf',
+                            badge: '#fae8ff',
+                            text: '#86198f'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: 24px;
+            left: 20px;
+            width: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                margin-left: -1.5px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navbar Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-teal-500/20">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold bg-gradient-to-r from-slate-900 via-teal-900 to-indigo-900 bg-clip-text text-transparent">
+                            Alur Pembelajaran Fase E
+                        </h1>
+                        <p class="text-xs text-slate-500 font-medium">SMA Kelas X • Semester 1 (Ganjil) 2026/2027</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="hidden md:flex items-center bg-slate-100 rounded-lg p-1 text-xs font-semibold">
+                        <span class="px-2.5 py-1 text-slate-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-days text-teal-600"></i> 16 Minggu Efektif
+                        </span>
+                        <span class="px-2.5 py-1 text-slate-600 flex items-center gap-1.5 border-l border-slate-200">
+                            <i class="fa-solid fa-clock text-indigo-600"></i> 64 Jam Pelajaran (JP)
+                        </span>
+                    </div>
+                    <button onclick="resetAllProgress()" title="Reset Progress" class="p-2 text-slate-400 hover:text-rose-600 transition rounded-lg hover:bg-slate-100">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                    <button onclick="window.print()" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800 shadow-sm transition">
+                        <i class="fa-solid fa-print"></i> Cetak / Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Banner & Progress Overview -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Hero Stats -->
+            <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute -right-8 -bottom-8 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute right-20 -top-8 w-40 h-40 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div class="space-y-3 z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold text-teal-300 border border-white/10">
+                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span> Kurikulum Merdeka • Kelas X SMA
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        Peta Capaian & Alur Tujuan Pembelajaran
+                    </h2>
+                    <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
+                        Pantau distribusi materi, tujuan pembelajaran (TP), lembar kerja, dan asesmen untuk mata pelajaran <strong class="text-blue-300">Ekonomi</strong> dan <strong class="text-purple-300">Sosiologi</strong> secara terintegrasi.
+                    </p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mt-6 pt-6 border-t border-white/10 z-10">
+                    <div class="flex justify-between items-center text-xs font-semibold mb-2">
+                        <span class="text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-list-check text-teal-400"></i> Progres Ketuntasan Pembelajaran
+                        </span>
+                        <span id="progressPercentText" class="text-teal-300 font-bold">0% (0/8 Modul)</span>
+                    </div>
+                    <div class="w-full bg-slate-700/60 rounded-full h-3 overflow-hidden p-0.5 border border-white/10">
+                        <div id="progressBar" class="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Summary Card -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-teal-600"></i> Ringkasan Semester 1
+                    </h3>
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-blue-50/70 border border-blue-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center text-sm font-bold">E</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Ekonomi</h4>
+                                    <p class="text-[11px] text-slate-500">4 Modul Utama • 32 JP</p>
+                                </div>
+                            </div>
+                            <span id="econProgressBadge" class="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full">0/4</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-purple-50/70 border border-purple-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-fuchsia-500 text-white flex items-center justify-center text-sm font-bold">S</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Sosiologi</h4>
+                                    <p class="text-[11px] text-slate-500">4 Modul Utama • 32 JP</p>
+                                </div>
+                            </div>
+                            <span id="socioProgressBadge" class="text-xs font-bold text-purple-700 bg-purple-100 px-2.5 py-1 rounded-full">0/4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>Model: <strong>PBL & PjBL</strong></span>
+                    <span>Asesmen: <strong>Formatif & HOTS</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter, Search & View Controls -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Filter Tabs -->
+            <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl w-full md:w-auto overflow-x-auto">
+                <button onclick="setFilter('all')" id="filter-all" class="filter-btn active px-4 py-2 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-sm">
+                    Semua Materi (8)
+                </button>
+                <button onclick="setFilter('ekonomi')" id="filter-ekonomi" class="filter-btn px-4 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">
+                    <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1.5"></span>Ekonomi (4)
+                </button>
+                <button onclick="setFilter('sosiologi')" id="filter-sosiologi" class="filter-btn px-4 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">
+                    <span class="inline-block w-2 h-2 rounded-full bg-fuchsia-500 mr-1.5"></span>Sosiologi (4)
+                </button>
+            </div>
+
+            <!-- Search & View Toggle -->
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="relative flex-1 md:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cari topik, minggu, kata kunci..." 
+                        class="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white transition">
+                </div>
+
+                <div class="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+                    <button onclick="setView('timeline')" id="view-timeline" title="Tampilan Garis Waktu" class="view-btn p-2 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-sm">
+                        <i class="fa-solid fa-timeline"></i>
+                    </button>
+                    <button onclick="setView('grid')" id="view-grid" title="Tampilan Kartu Grid" class="view-btn p-2 rounded-lg text-xs font-bold transition text-slate-500 hover:text-slate-900">
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Views -->
+        <div id="contentContainer">
+            <!-- Timeline View (Default) -->
+            <div id="timelineView" class="relative timeline-line space-y-8 py-4"></div>
+
+            <!-- Grid Card View -->
+            <div id="gridView" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
+                <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-2xl mb-3">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h4 class="text-base font-bold text-slate-800">Tidak ada materi yang cocok</h4>
+                <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Coba ubah kata kunci pencarian atau ganti filter mata pelajaran.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Detail Topik -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div id="modalHeaderBg" class="p-6 text-white flex justify-between items-start">
+                <div>
+                    <span id="modalSubjectBadge" class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm"></span>
+                    <h3 id="modalTitle" class="text-xl font-bold mt-2"></h3>
+                    <p id="modalWeeks" class="text-xs text-white/80 mt-1 flex items-center gap-2"></p>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-6 flex-1 text-sm text-slate-700">
+                <!-- Capaian & Tujuan -->
+                <div>
+                    <h4 class="font-bold text-slate-900 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-bullseye text-teal-600"></i> Tujuan Pembelajaran (TP)
+                    </h4>
+                    <ul id="modalObjectives" class="space-y-1.5 list-disc list-inside text-xs leading-relaxed text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200"></ul>
+                </div>
+
+                <!-- Pokok Bahasan -->
+                <div>
+                    <h4 class="font-bold text-slate-900 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-book-open text-indigo-600"></i> Pokok Bahasan & Submateri
+                    </h4>
+                    <div id="modalSubtopics" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Pedagogi & Asesmen -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-semibold text-slate-500">Model Pembelajaran</div>
+                        <div id="modalModel" class="font-bold text-slate-800 text-sm mt-0.5"></div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-semibold text-slate-500">Bentuk Asesmen</div>
+                        <div id="modalAssessment" class="font-bold text-slate-800 text-sm mt-0.5"></div>
+                    </div>
+                </div>
+
+                <!-- Perangkat Ajar Terkait -->
+                <div class="pt-2">
+                    <h4 class="font-bold text-slate-900 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-link text-blue-600"></i> Perangkat Ajar Tersedia
+                    </h4>
+                    <div id="modalLinks" class="space-y-2 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" id="modalCheckbox" onchange="toggleModalItemComplete()" class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 border-slate-300">
+                    <span class="text-xs font-bold text-slate-700">Tandai Modul Ini Selesai Diajarkan</span>
+                </label>
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-1">
+            <p class="font-semibold text-slate-700">Dashboard Alur Pembelajaran Kurikulum Merdeka • Fase E Kelas X</p>
+            <p>Mata Pelajaran: Ekonomi & Sosiologi • Disusun untuk Mendukung Pembelajaran Kontekstual & Terstruktur</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const syllabusData = [
+            {
+                id: 'econ-1',
+                subject: 'ekonomi',
+                subjectName: 'Ekonomi',
+                unitNumber: 1,
+                title: 'Konsep Dasar Ilmu Ekonomi, Kelangkaan, & Skala Prioritas',
+                weeks: 'Minggu 1 - 3',
+                hours: '6 JP (3 Pertemuan)',
+                color: 'blue',
+                model: 'Problem Based Learning (PBL)',
+                assessment: 'Formatif (LKPD Anggaran) & Sumatif HOTS',
+                summary: 'Mempelajari hakikat kelangkaan, membedakan kebutuhan dan keinginan, menyusun skala prioritas, serta menghitung biaya peluang (opportunity cost).',
+                objectives: [
+                    'Menjelaskan konsep kelangkaan sumber daya ekonomi dalam kehidupan nyata.',
+                    'Membedakan kebutuhan (needs) dan keinginan (wants) secara rasional.',
+                    'Menyusun skala prioritas alokasi anggaran pribadi dengan matriks 4 kuadran.',
+                    'Menghitung dan mengevaluasi biaya peluang (opportunity cost) dalam pengambilan keputusan.'
+                ],
+                subtopics: [
+                    'Hakikat Ilmu Ekonomi',
+                    'Faktor Kelangkaan',
+                    'Kebutuhan vs Keinginan',
+                    'Matriks Skala Prioritas',
+                    'Biaya Peluang (Opportunity Cost)',
+                    'Perilaku Konsumen Rasional'
+                ],
+                links: [
+                    { name: 'Modul Ajar Ekonomi Topik 1 (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1aBX6CjwqIfehCurY8j0mktzMF_c-JXZQS30Mk0rg7VE/edit' },
+                    { name: 'LKPD Simulasi Skala Prioritas & Biaya Peluang', type: 'lkpd', url: 'https://docs.google.com/document/d/1JSbIl2NQBxyORhxrYMTYXAJ-aobjQzeU8mopo0bDmeA/edit' },
+                    { name: 'Bank Soal & Kisi-Kisi Topik 1', type: 'test', url: 'https://docs.google.com/document/d/1RPtBr_Wwm9gWj-ag93FE5ljg4rsk7gsBNtdxh8P0F2c/edit' },
+                    { name: 'Slide Presentasi Topik 1 (Google Slides)', type: 'slide', url: 'https://docs.google.com/presentation/d/1BCjrBSNBmziY4eFYfNz7RqUxv1prOo57PQKPEGY8ICg/edit' }
+                ]
+            },
+            {
+                id: 'socio-1',
+                subject: 'sosiologi',
+                subjectName: 'Sosiologi',
+                unitNumber: 1,
+                title: 'Sosiologi Sebagai Ilmu & Fungsinya Mengkaji Gejala Sosial',
+                weeks: 'Minggu 1 - 3',
+                hours: '6 JP (3 Pertemuan)',
+                color: 'purple',
+                model: 'Inquiry Based Learning',
+                assessment: 'Observasi Partisipasi & Tes Pemahaman Konsep',
+                summary: 'Mengenal hakikat sosiologi sebagai ilmu empiris, teoritis, kumulatif, dan non-etis dalam membedah dinamika fenomena masyarakat.',
+                objectives: [
+                    'Menjelaskan sejarah perkembangan dan 4 ciri utama sosiologi sebagai ilmu pengetahuan.',
+                    'Mengidentifikasi objek kajian material dan formal dalam sosiologi.',
+                    'Menganalisis fungsi sosiologi dalam perencanaan sosial dan pemecahan masalah (gejala sosial).'
+                ],
+                subtopics: [
+                    'Sejarah Kelahiran Sosiologi',
+                    '4 Ciri Sosiologi (Empiris, Teoritis, Kumulatif, Non-etis)',
+                    'Objek Kajian Sosiologi',
+                    'Fungsi Sosiologi untuk Masyarakat'
+                ],
+                links: [
+                    { name: 'Modul Ajar Terpadu Sosiologi (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1qlXsBPMVs7pSRl430nrXHvNS6oqePM2lKIP3ZYfLjTQ/edit' },
+                    { name: 'Master Administrasi Pembelajaran (Google Sheets)', type: 'sheet', url: 'https://docs.google.com/spreadsheets/d/1T9ndtmr0z1HB0wZdvp8Ld6-BCB7yIRhWnVHC0QKzxJw/edit' }
+                ]
+            },
+            {
+                id: 'econ-2',
+                subject: 'ekonomi',
+                subjectName: 'Ekonomi',
+                unitNumber: 2,
+                title: 'Masalah Pokok Ekonomi & Ragam Sistem Ekonomi Dunia',
+                weeks: 'Minggu 4 - 7',
+                hours: '8 JP (4 Pertemuan)',
+                color: 'blue',
+                model: 'Problem Based Learning (PBL)',
+                assessment: 'Formatif (LKPD Studi Kasus Komparatif) & Asesmen Sumatif',
+                summary: 'Menganalisis pemecahan masalah ekonomi modern (What, How, for Whom) melalui sistem ekonomi tradisional, komando, pasar, campuran, dan Pancasila.',
+                objectives: [
+                    'Menguraikan masalah pokok ekonomi klasik dan modern (What, How, for Whom).',
+                    'Membandingkan ciri, kelebihan, dan kelemahan 4 sistem ekonomi dunia.',
+                    'Menganalisis karakteristik Sistem Ekonomi Pancasila berlandaskan Pasal 33 UUD 1945.',
+                    'Mengevaluasi peran BUMN, BUMS, dan Koperasi sebagai pilar ekonomi Indonesia.'
+                ],
+                subtopics: [
+                    'Masalah Pokok Ekonomi Modern',
+                    'Sistem Ekonomi Tradisional',
+                    'Sistem Ekonomi Komando (Sosialis)',
+                    'Sistem Ekonomi Pasar (Liberal)',
+                    'Sistem Ekonomi Campuran',
+                    'Demokrasi Ekonomi Pancasila (Pasal 33 UUD 1945)'
+                ],
+                links: [
+                    { name: 'Modul Ajar Sistem Ekonomi (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/12dg8eLgISPgDZUB3aSVong8BEHoxiLSZLBcMKvWvyMc/edit' },
+                    { name: 'LKPD Studi Kasus Komparatif Sistem Ekonomi', type: 'lkpd', url: 'https://docs.google.com/document/d/1whhbZ5zEtlQlb2WQoGbJcpUVdF5AF-gysoWbry0CGqo/edit' },
+                    { name: 'Bank Soal & Kisi-Kisi Sistem Ekonomi', type: 'test', url: 'https://docs.google.com/document/d/1QZqWibjKFSAeHaWJaIzpvMK_lDvd3pBNBwktXw_VcdE/edit' },
+                    { name: 'Slide Presentasi Sistem Ekonomi (Google Slides)', type: 'slide', url: 'https://docs.google.com/presentation/d/1cj5ZjuTfVLiOUFlKh6TuyP8oiJ3QS8B079t6tNhAHak/edit' }
+                ]
+            },
+            {
+                id: 'socio-2',
+                subject: 'sosiologi',
+                subjectName: 'Sosiologi',
+                unitNumber: 2,
+                title: 'Individu, Kelompok, & Hubungan Sosial (Interaksi Sosial)',
+                weeks: 'Minggu 4 - 7',
+                hours: '8 JP (4 Pertemuan)',
+                color: 'purple',
+                model: 'Problem Based Learning (PBL) & Diskusi Kasus',
+                assessment: 'Formatif (LKPD Analisis Kasus Digital) & Kuis Formatif',
+                summary: 'Mengkaji syarat terjadinya interaksi, faktor psikososial pendorong, bentuk interaksi asosiatif vs disosiatif, serta dinamika interaksi di media digital.',
+                objectives: [
+                    'Menjelaskan kontak sosial dan komunikasi sebagai syarat mutlak interaksi.',
+                    'Menganalisis faktor pendorong hubungan sosial (imitasi, sugesti, identifikasi, simpati, empati).',
+                    'Mengklasifikasikan bentuk interaksi asosiatif (kerja sama, akomodasi) dan disosiatif (konflik, kontravensi).',
+                    'Mengevaluasi etika interaksi di ruang media sosial dan pencegahan cyberbullying.'
+                ],
+                subtopics: [
+                    'Syarat Interaksi (Kontak & Komunikasi)',
+                    'Faktor Pendorong Interaksi',
+                    'Bentuk Asosiatif (Kerja Sama, Akomodasi, Asimilasi, Akulturasi)',
+                    'Bentuk Disosiatif (Persaingan, Kontravensi, Konflik)',
+                    'Interaksi di Ruang Digital'
+                ],
+                links: [
+                    { name: 'Modul Ajar Sosiologi Interaksi Sosial (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1uiwHuxrGO8OkKSHJxuEO2LkLik7a4GrePsCFPW6-0AM/edit' },
+                    { name: 'LKPD Studi Kasus Interaksi di Era Digital', type: 'lkpd', url: 'https://docs.google.com/document/d/1NNep_pZaLh5Q4W5HXNzxmIEBVG7AzA14BpS1aF65Wf4/edit' },
+                    { name: 'Bank Soal & Kisi-Kisi Sosiologi Interaksi', type: 'test', url: 'https://docs.google.com/document/d/1WqG4rWUVuJFn-NYHJw2t3DkFbMRr5dovXlwZ9nafoMs/edit' },
+                    { name: 'Slide Presentasi Sosiologi Interaksi (Google Slides)', type: 'slide', url: 'https://docs.google.com/presentation/d/1Ho6RDkWDbIAc-KjvqjppJ-iPDyfpvyFQmmDTyyhtj8I/edit' }
+                ]
+            },
+            {
+                id: 'econ-3',
+                subject: 'ekonomi',
+                subjectName: 'Ekonomi',
+                unitNumber: 3,
+                title: 'Mekanisme Pasar, Elastisitas, & Keseimbangan Harga',
+                weeks: 'Minggu 8 - 12',
+                hours: '10 JP (5 Pertemuan)',
+                color: 'blue',
+                model: 'Problem Based Learning (PBL) & Latihan Hitungan',
+                assessment: 'Penugasan Kurva Keseimbangan & Ulangan Harian Bab 3',
+                summary: 'Menganalisis hukum permintaan dan penawaran, menghitung fungsi kurva dan koefisien elastisitas, serta menentukan titik harga keseimbangan (equilibrium).',
+                objectives: [
+                    'Menjelaskan hukum permintaan, penawaran, dan faktor-faktor yang memengaruhinya.',
+                    'Menghitung harga dan jumlah keseimbangan pasar (Qd = Qs, Pd = Ps).',
+                    'Menghitung dan menginterpretasikan elastisitas permintaan dan penawaran.',
+                    'Membedakan struktur pasar persaingan sempurna dan persaingan tidak sempurna (monopoli, oligopoli, monopolistik).'
+                ],
+                subtopics: [
+                    'Hukum Permintaan & Kurva Permintaan',
+                    'Hukum Penawaran & Kurva Penawaran',
+                    'Keseimbangan Pasar (Equilibrium)',
+                    'Elastisitas Harga',
+                    'Struktur Pasar & Peran Regulasi Pemerintah'
+                ],
+                links: [
+                    { name: 'Modul Ajar Terpadu Ekonomi Topik Lanjutan (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1qlXsBPMVs7pSRl430nrXHvNS6oqePM2lKIP3ZYfLjTQ/edit' },
+                    { name: 'Master Administrasi Pembelajaran (Google Sheets)', type: 'sheet', url: 'https://docs.google.com/spreadsheets/d/1T9ndtmr0z1HB0wZdvp8Ld6-BCB7yIRhWnVHC0QKzxJw/edit' }
+                ]
+            },
+            {
+                id: 'socio-3',
+                subject: 'sosiologi',
+                subjectName: 'Sosiologi',
+                unitNumber: 3,
+                title: 'Nilai dan Norma Sosial serta Pembentukan Kepribadian',
+                weeks: 'Minggu 8 - 11',
+                hours: '8 JP (4 Pertemuan)',
+                color: 'purple',
+                model: 'Inquiry Based Learning & Observasi Lapangan',
+                assessment: 'Laporan Analisis Norma Masyarakat & Asesmen Sumatif',
+                summary: 'Memahami tingkatan norma sosial, macam-macam nilai budaya, proses sosialisasi, dan peran agen sosialisasi dalam membentuk kepribadian individu.',
+                objectives: [
+                    'Mengklasifikasikan nilai sosial menurut Prof. Notonagoro (Material, Vital, Kerohanian).',
+                    'Menganalisis 4 tingkatan norma sosial berdasarkan daya ikatnya (Cara, Kebiasaan, Tata Kelakuan, Adat Istiadat).',
+                    'Mengevaluasi peran agen sosialisasi (keluarga, sekolah, teman sebaya, media) dalam internalisasi nilai.',
+                    'Mengaitkan penegakan norma dengan keteraturan sosial (social order).'
+                ],
+                subtopics: [
+                    'Hakikat & Klasifikasi Nilai Sosial',
+                    'Tingkatan Norma (Usage, Folkways, Mores, Customs)',
+                    'Tahapan Sosialisasi (Preparatory, Play, Game, Generalized Other)',
+                    'Agen Sosialisasi & Kepribadian'
+                ],
+                links: [
+                    { name: 'Modul Ajar Terpadu Sosiologi Lanjutan (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1qlXsBPMVs7pSRl430nrXHvNS6oqePM2lKIP3ZYfLjTQ/edit' },
+                    { name: 'Master Administrasi Pembelajaran (Google Sheets)', type: 'sheet', url: 'https://docs.google.com/spreadsheets/d/1T9ndtmr0z1HB0wZdvp8Ld6-BCB7yIRhWnVHC0QKzxJw/edit' }
+                ]
+            },
+            {
+                id: 'econ-4',
+                subject: 'ekonomi',
+                subjectName: 'Ekonomi',
+                unitNumber: 4,
+                title: 'Lembaga Jasa Keuangan, OJK, & Sistem Pembayaran Digital',
+                weeks: 'Minggu 13 - 16',
+                hours: '8 JP (4 Pertemuan)',
+                color: 'blue',
+                model: 'Project Based Learning (PjBL) - Literasi Finansial',
+                assessment: 'Proyek Poster Edukasi Finansial & Asesmen Akhir Semester',
+                summary: 'Mempelajari peran Otoritas Jasa Keuangan (OJK), industri perbankan, pasar modal, asuransi, pegadaian, serta evolusi sistem pembayaran tunai dan nontunai.',
+                objectives: [
+                    'Menjelaskan fungsi dan wewenang Otoritas Jasa Keuangan (OJK).',
+                    'Membedakan peran Bank Sentral (Bank Indonesia) dan Bank Umum.',
+                    'Menganalisis produk lembaga keuangan bukan bank (pasar modal, asuransi, fintech).',
+                    'Menerapkan prinsip keamanan bertransaksi digital (QRIS, e-wallet, mobile banking).'
+                ],
+                subtopics: [
+                    'Peran & Fungsi OJK',
+                    'Perbankan & Bank Indonesia',
+                    'Pasar Modal & Investasi Pemula',
+                    'Lembaga Keuangan Non-Bank',
+                    'Sistem Pembayaran Digital & Fintech'
+                ],
+                links: [
+                    { name: 'Master Administrasi Pembelajaran (Google Sheets)', type: 'sheet', url: 'https://docs.google.com/spreadsheets/d/1T9ndtmr0z1HB0wZdvp8Ld6-BCB7yIRhWnVHC0QKzxJw/edit' }
+                ]
+            },
+            {
+                id: 'socio-4',
+                subject: 'sosiologi',
+                subjectName: 'Sosiologi',
+                unitNumber: 4,
+                title: 'Ragam Gejala Sosial, Perilaku Menyimpang, & Pengendalian Sosial',
+                weeks: 'Minggu 12 - 16',
+                hours: '10 JP (5 Pertemuan)',
+                color: 'purple',
+                model: 'Case-Based Method & Studi Kasus Lingkungan',
+                assessment: 'Karya Esai Solutif & Asesmen Sumatif Akhir Semester',
+                summary: 'Menganalisis akar penyebab penyimpangan sosial (teori labelling, anomi, asosiasi diferensial) serta mekanisme lembaga pengendalian sosial formal & informal.',
+                objectives: [
+                    'Mendefinisikan perilaku menyimpang dan membedakan penyimpangan primer vs sekunder.',
+                    'Menganalisis teori-teori sosiologis mengenai penyebab timbulnya kejahatan dan deviasi sosial.',
+                    'Menguraikan sifat pengendalian sosial preventif, represif, kuratif, dan persuasif.',
+                    'Merumuskan solusi berbasis komunitas dalam menangani kenakalan remaja dan disorganisasi sosial.'
+                ],
+                subtopics: [
+                    'Pengertian Perilaku Menyimpang',
+                    'Teori Penyimpangan Sosial (Labelling, Anomi, Diferensiasi)',
+                    'Bentuk Penyimpangan (Primer, Sekunder, Individu, Kelompok)',
+                    'Sifat Pengendalian Sosial (Preventif & Represif)',
+                    'Peran Lembaga Pengendalian Sosial'
+                ],
+                links: [
+                    { name: 'Modul Ajar Terpadu Sosiologi Lanjutan (Google Docs)', type: 'doc', url: 'https://docs.google.com/document/d/1qlXsBPMVs7pSRl430nrXHvNS6oqePM2lKIP3ZYfLjTQ/edit' },
+                    { name: 'Master Administrasi Pembelajaran (Google Sheets)', type: 'sheet', url: 'https://docs.google.com/spreadsheets/d/1T9ndtmr0z1HB0wZdvp8Ld6-BCB7yIRhWnVHC0QKzxJw/edit' }
+                ]
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentView = 'timeline';
+        let currentSearch = '';
+        let completedItems = JSON.parse(localStorage.getItem('spark_completed_modules') || '[]');
+        let activeModalId = null;
+
+        function saveCompleted() {
+            localStorage.setItem('spark_completed_modules', JSON.stringify(completedItems));
+            updateProgressStats();
+        }
+
+        function toggleComplete(id, event) {
+            if (event) event.stopPropagation();
+            const index = completedItems.indexOf(id);
+            if (index > -1) {
+                completedItems.splice(index, 1);
+            } else {
+                completedItems.push(id);
+            }
+            saveCompleted();
+            render();
+        }
+
+        function resetAllProgress() {
+            if (confirm('Apakah Anda yakin ingin mengatur ulang semua status progres modul?')) {
+                completedItems = [];
+                saveCompleted();
+                render();
+            }
+        }
+
+        function updateProgressStats() {
+            const total = syllabusData.length;
+            const completedCount = completedItems.length;
+            const percent = Math.round((completedCount / total) * 100);
+
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentText = document.getElementById('progressPercentText');
+            if (progressBar) progressBar.style.width = `${percent}%`;
+            if (progressPercentText) progressPercentText.innerText = `${percent}% (${completedCount}/${total} Modul)`;
+
+            const econTotal = syllabusData.filter(d => d.subject === 'ekonomi').length;
+            const econDone = syllabusData.filter(d => d.subject === 'ekonomi' && completedItems.includes(d.id)).length;
+            const econBadge = document.getElementById('econProgressBadge');
+            if (econBadge) econBadge.innerText = `${econDone}/${econTotal}`;
+
+            const socioTotal = syllabusData.filter(d => d.subject === 'sosiologi').length;
+            const socioDone = syllabusData.filter(d => d.subject === 'sosiologi' && completedItems.includes(d.id)).length;
+            const socioBadge = document.getElementById('socioProgressBadge');
+            if (socioBadge) socioBadge.innerText = `${socioDone}/${socioTotal}`;
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`filter-${filter}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+            render();
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('text-slate-500');
+            });
+            const activeBtn = document.getElementById(`view-${view}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-500');
+            }
+            render();
+        }
+
+        function handleSearch() {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            render();
+        }
+
+        function getFilteredData() {
+            return syllabusData.filter(item => {
+                const matchFilter = (currentFilter === 'all') || (item.subject === currentFilter);
+                const matchSearch = !currentSearch || 
+                    item.title.toLowerCase().includes(currentSearch) ||
+                    item.summary.toLowerCase().includes(currentSearch) ||
+                    item.weeks.toLowerCase().includes(currentSearch) ||
+                    item.subtopics.some(st => st.toLowerCase().includes(currentSearch));
+                return matchFilter && matchSearch;
+            });
+        }
+
+        function openModal(id) {
+            const item = syllabusData.find(d => d.id === id);
+            if (!item) return;
+            activeModalId = id;
+
+            const modal = document.getElementById('detailModal');
+            const headerBg = document.getElementById('modalHeaderBg');
+            const badge = document.getElementById('modalSubjectBadge');
+            const title = document.getElementById('modalTitle');
+            const weeks = document.getElementById('modalWeeks');
+            const objectives = document.getElementById('modalObjectives');
+            const subtopics = document.getElementById('modalSubtopics');
+            const model = document.getElementById('modalModel');
+            const assessment = document.getElementById('modalAssessment');
+            const linksContainer = document.getElementById('modalLinks');
+            const checkbox = document.getElementById('modalCheckbox');
+
+            if (item.color === 'blue') {
+                headerBg.className = 'p-6 text-white flex justify-between items-start bg-gradient-to-r from-blue-600 to-indigo-700';
+                badge.innerText = 'Mata Pelajaran: Ekonomi • Unit ' + item.unitNumber;
+            } else {
+                headerBg.className = 'p-6 text-white flex justify-between items-start bg-gradient-to-r from-fuchsia-600 to-purple-800';
+                badge.innerText = 'Mata Pelajaran: Sosiologi • Unit ' + item.unitNumber;
+            }
+
+            title.innerText = item.title;
+            weeks.innerHTML = `<i class="fa-solid fa-calendar-week"></i> ${item.weeks} &nbsp;•&nbsp; <i class="fa-solid fa-clock"></i> ${item.hours}`;
+            
+            objectives.innerHTML = item.objectives.map(obj => `<li>${obj}</li>`).join('');
+            subtopics.innerHTML = item.subtopics.map(st => `
+                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                    # ${st}
+                </span>
+            `).join('');
+
+            model.innerText = item.model;
+            assessment.innerText = item.assessment;
+
+            if (item.links && item.links.length > 0) {
+                linksContainer.innerHTML = item.links.map(l => `
+                    <a href="${l.url}" target="_blank" class="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/70 hover:bg-blue-100/80 border border-blue-200 text-blue-900 font-semibold transition group">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid ${l.type === 'slide' ? 'fa-file-powerpoint text-amber-600' : l.type === 'sheet' ? 'fa-file-excel text-emerald-600' : 'fa-file-lines text-blue-600'}"></i>
+                            ${l.name}
+                        </span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-blue-500 group-hover:translate-x-0.5 transition text-[11px]"></i>
+                    </a>
+                `).join('');
+            } else {
+                linksContainer.innerHTML = '<p class="text-slate-400 italic">Belum ada tautan tambahan.</p>';
+            }
+
+            checkbox.checked = completedItems.includes(id);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeModalId = null;
+        }
+
+        function toggleModalItemComplete() {
+            if (!activeModalId) return;
+            toggleComplete(activeModalId);
+        }
+
+        function render() {
+            const data = getFilteredData();
+            const timelineView = document.getElementById('timelineView');
+            const gridView = document.getElementById('gridView');
+            const emptyState = document.getElementById('emptyState');
+
+            if (data.length === 0) {
+                timelineView.classList.add('hidden');
+                gridView.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            if (currentView === 'timeline') {
+                timelineView.classList.remove('hidden');
+                gridView.classList.add('hidden');
+                renderTimeline(data);
+            } else {
+                timelineView.classList.add('hidden');
+                gridView.classList.remove('hidden');
+                renderGrid(data);
+            }
+            updateProgressStats();
+        }
+
+        function renderTimeline(data) {
+            const container = document.getElementById('timelineView');
+            container.innerHTML = data.map((item, index) => {
+                const isEven = index % 2 === 0;
+                const isDone = completedItems.includes(item.id);
+                const isEcon = item.subject === 'ekonomi';
+                const badgeColor = isEcon ? 'bg-blue-100 text-blue-800 border-blue-200' : 'bg-purple-100 text-purple-800 border-purple-200';
+                const accentBorder = isEcon ? 'hover:border-blue-400' : 'hover:border-purple-400';
+                const dotColor = isDone ? 'bg-emerald-500 text-white' : (isEcon ? 'bg-blue-600 text-white' : 'bg-fuchsia-600 text-white');
+
+                return `
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group">
+                        <!-- Left side content for even, empty for odd -->
+                        <div class="w-full md:w-[45%] ${isEven ? 'md:pr-8 md:text-right' : 'md:order-2 md:pl-8 md:text-left'} pl-12 md:pl-0">
+                            <div onclick="openModal('${item.id}')" 
+                                class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md cursor-pointer ${accentBorder} ${isDone ? 'ring-2 ring-emerald-500/20 bg-emerald-50/10' : ''}">
+                                
+                                <div class="flex items-center gap-2 mb-2 ${isEven ? 'md:justify-end' : 'justify-start'} flex-wrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${badgeColor}">
+                                        ${item.subjectName} • Unit ${item.unitNumber}
+                                    </span>
+                                    <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                                        <i class="fa-regular fa-calendar"></i> ${item.weeks}
+                                    </span>
+                                    <span class="text-xs text-slate-400 font-medium">• ${item.hours}</span>
+                                </div>
+
+                                <h3 class="text-base font-bold text-slate-900 group-hover:text-teal-700 transition ${isDone ? 'line-through text-slate-400' : ''}">
+                                    ${item.title}
+                                </h3>
+
+                                <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
+                                    ${item.summary}
+                                </p>
+
+                                <div class="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                                    <span class="text-slate-400 font-medium">Model: <strong class="text-slate-700">${item.model.split('(')[0]}</strong></span>
+                                    <button onclick="toggleComplete('${item.id}', event)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+                                        <i class="fa-solid ${isDone ? 'fa-check' : 'fa-circle-notch'}"></i> ${isDone ? 'Tuntas' : 'Tandai Selesai'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Timeline Marker -->
+                        <div class="absolute left-0 md:left-1/2 -translate-x-2 md:-translate-x-1/2 w-9 h-9 rounded-full ${dotColor} flex items-center justify-center font-bold text-xs shadow-md z-10 border-4 border-white">
+                            ${isDone ? '<i class="fa-solid fa-check text-xs"></i>' : (index + 1)}
+                        </div>
+
+                        <!-- Spacer for desktop layout -->
+                        <div class="hidden md:block w-[45%] ${isEven ? 'order-2' : ''}"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderGrid(data) {
+            const container = document.getElementById('gridView');
+            container.innerHTML = data.map(item => {
+                const isDone = completedItems.includes(item.id);
+                const isEcon = item.subject === 'ekonomi';
+                const badgeColor = isEcon ? 'bg-blue-100 text-blue-800 border-blue-200' : 'bg-purple-100 text-purple-800 border-purple-200';
+                const topBorder = isEcon ? 'border-t-4 border-t-blue-500' : 'border-t-4 border-t-fuchsia-500';
+
+                return `
+                    <div onclick="openModal('${item.id}')" 
+                        class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between ${topBorder} ${isDone ? 'ring-2 ring-emerald-500/20 bg-emerald-50/10' : ''}">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2.5">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${badgeColor}">
+                                    ${item.subjectName} • Unit ${item.unitNumber}
+                                </span>
+                                <span class="text-xs font-semibold text-slate-500">
+                                    <i class="fa-regular fa-clock text-slate-400"></i> ${item.hours}
+                                </span>
+                            </div>
+
+                            <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-teal-700 transition ${isDone ? 'line-through text-slate-400' : ''}">
+                                ${item.title}
+                            </h3>
+
+                            <p class="text-xs text-slate-500 mt-2 line-clamp-3 leading-relaxed">
+                                ${item.summary}
+                            </p>
+                        </div>
+
+                        <div class="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                            <span class="text-[11px] font-bold text-slate-400">
+                                <i class="fa-regular fa-calendar-days text-teal-600"></i> ${item.weeks}
+                            </span>
+                            <button onclick="toggleComplete('${item.id}', event)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+                                <i class="fa-solid ${isDone ? 'fa-check' : 'fa-circle-notch'}"></i> ${isDone ? 'Tuntas' : 'Selesai'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            render();
+        });
+    </script>
+</body>
+</html>
